@@ -1,0 +1,164 @@
+#include<iostream>
+using namespace std;
+
+class node{
+    public:
+    int data;
+    node* next;
+
+    node(int a){
+        this -> data = a;
+        this -> next = NULL;
+    }
+
+};
+void insert_at_head(node* &head, int b){
+    node* temp = new node(b);
+    temp -> next = head;
+    head = temp;
+}
+//insert at the end
+void insert_at_end(node* &head, int x){
+    node* temp = new node(x);
+    head -> next = temp;
+    head = temp;
+
+}
+
+void insert_at_specific_pos(node* &head, int value, int pos){
+
+    if(pos == 1){
+        insert_at_head(head, value);
+        return;
+    }
+    node* nodetoInsert = new node(value);
+    int currpos = 1;
+    node* temp = head;
+    while(currpos<pos-1){
+        temp = temp -> next;
+        currpos++;
+    }
+      
+     nodetoInsert ->next = temp -> next;
+     temp -> next = nodetoInsert;
+
+}
+
+// search for item in list
+void search_item(node* head, int item) {
+    node* current = head;
+    bool found = false;
+    while (current != NULL) {
+        if (current->data == item) {
+            found = true;
+            break;
+        }
+        current = current->next;
+    }
+    if (found) {
+        cout << "Item " << item << " found in the linked list." << endl;
+    } else {
+        cout << "Item " << item << " not found in the linked list." << endl;
+    }
+}
+
+
+//10 20 30 100 
+
+void print (node* &head){
+    if(head == NULL){
+        cout<<"list is empty "<<endl;
+    }
+    else{
+        node* temp = head;
+        while(temp != NULL){
+            cout<<temp ->data<<"->";
+            temp = temp ->next;
+        }
+            cout<<"NULL"<<endl;
+    }
+
+}
+void delete_iteam (node* &head, int pos){
+    if (pos == 1){
+        node* temp = head;
+        head = head ->next;
+        temp -> next = NULL;
+        delete temp;
+    }
+    else{
+        node* curr = head;
+        node* pre = NULL;
+        int atpos = 1;
+
+        while(atpos<pos){
+            pre = curr;
+            curr = curr ->next;
+            atpos++;
+
+        }
+        pre -> next = curr -> next;
+        curr -> next = NULL;
+        delete curr;
+
+    }
+
+}
+int main(){
+    
+    node* node1 = NULL;
+    node* head = node1;
+    node* end = node1;
+
+    int choose,value,pos;
+
+    while(true){
+
+        cout<<"What you want to do??"<<endl;
+        cout<<"1.creat a linked list inserting node one by one at the end "<<endl;
+        cout<<"2.Display your list "<<endl;
+        cout<<"3.Search an item into your linked list "<<endl;
+        cout<<"4.Insert a new item at a specific position "<<endl;
+        cout<<"5.Delete an item from the list "<<endl;
+        cin>>choose;
+        switch (choose)
+        {
+        case 1:
+           cout<<"Enter the value want to insert at the end"<<endl;
+           cin>>value;
+            if(head == NULL){
+                head = new node(value);
+                end = head;
+            }
+            else{
+                insert_at_end(end, value);
+            }
+
+            break;
+        case 2:
+            print(head); 
+            break;
+        case 3:
+            
+            cout<<"Enter the value to search :";
+            cin>>value;
+            search_item(head, value);
+            break;
+        case 4:
+            cout<<"Enter the value  want to insert at :";  
+            cin >> value;
+            cout<<"Enter the positon :";
+            cin >>pos;
+            insert_at_specific_pos(head, value, pos);
+            break;
+        case 5:    
+            cout<<"Enter position you want to delete :";
+            cin >> pos;
+            delete_iteam(head, pos);
+            break;
+        default:
+        cout<<"Choose between 1 to 5 "<<endl;
+            break;
+        }
+    }
+}
